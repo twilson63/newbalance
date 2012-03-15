@@ -1,19 +1,23 @@
-tako = require 'tako'
-
-#global.list.add host: '127.0.0.1', port: 4000
-#global.list.add host: '127.0.0.1', port: 4001
+flatiron = require 'flatiron'
 
 module.exports = ->
-  app = tako()
-
-  app.route('/servers/add').json (req, resp) ->
-    req.on 'json', (json) -> 
-      global.list.add(json)
-      resp.end global.list.all()
-
-  app.route('/servers').json (req, resp) ->
-    resp.end global.list.all()
-  app.route('/servers/clear').json (req, resp) ->
+  app = flatiron.app
+  app.use flatiron.plugins.http
+  app.router.get '/servers', ->
+    @res.writeHead 200, 'content-type': 'application/json'
+    @res.end JSON.stringify(global.list.all())
+  app.router.post '/servers', ->
+    try
+      unless @req.headers['content-type'] is 'application/json' then throw new Error('not json')
+      unless typeof @req.body is 'object' then throw new Error('not json')
+      global.list.add(@req.body)
+      @res.writeHead 201, 'content-type': 'application/json'
+      @res.end JSON.stringify(status: 'success')
+    catch err
+      @res.writeHead 404, 'content-type': 'application/json'
+      @res.end JSON.stringify(error: { description: 'could not parse json' })
+  app.router.delete '/servers', ->
     global.list.clear()
-    resp.end global.list.all()
-  app.httpServer.listen(7000)
+    @res.writeHead 200, 'content-type': 'application/json'
+    @res.end JSON.stringify(status: 'success')
+  app.start 7000
