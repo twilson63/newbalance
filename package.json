@@ -1,0 +1,29 @@
+{
+  "author": "Tom Wilson <tom@jackhq.com>",
+  "name": "newbalance",
+  "description": "A NodeJs Load Balancer",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/twilson63/newbalance.git"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "engines": {
+    "node": "0.6 || 0.7 || 0.8"
+  },
+  "dependencies": {
+    "tako": "*",
+    "request": "*",
+    "bouncy": "*",
+    "coffeecup":"*",
+    "stop-n-go": "*"
+  },
+  "devDependencies": {
+    "coffee-script": "1.2.0",
+    "mocha": "*",
+    "should": "*"
+  },
+  "optionalDependencies": {}
+}
