@@ -1,4 +1,5 @@
 global.list = require 'stop-n-go'
+global.settings = {}
 admin = require './admin'
 balancer = require './balancer'
 

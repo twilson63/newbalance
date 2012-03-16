@@ -3,6 +3,13 @@ flatiron = require 'flatiron'
 module.exports = ->
   app = flatiron.app
   app.use flatiron.plugins.http
+  app.router.get '/settings', ->
+    @res.writeHead 200, 'content-type': 'application/json'
+    @res.end JSON.stringify(global.settings)
+  app.router.put '/settings', ->
+    global.settings = @req.body
+    @res.writeHead 200, 'content-type': 'application/json'
+    @res.end JSON.stringify(status: 'success')
   app.router.get '/servers', ->
     @res.writeHead 200, 'content-type': 'application/json'
     @res.end JSON.stringify(global.list.all())
